@@ -1,9 +1,9 @@
-package handler
+package handlers
 
 import (
 	"net/http"
 
-	render "github.com/prayagsingh/go-web-app/pkg/render"
+	"github.com/prayagsingh/go-web-app/pkg/render"
 )
 
 // Home is about home page hadler
