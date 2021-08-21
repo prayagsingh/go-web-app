@@ -1,3 +1,5 @@
+<!-- Below directives is specific to golang template -->
+<!-- In the block section "." means we are passing data and inside the block we can pass things which are custom to specific page -->
 {{define "base"}}
     <!DOCTYPE html>
     <html lang="en">
@@ -15,7 +17,7 @@
         {{end}}
     </head>
     <body>
-        {{ block "content" .}}
+        {{block "content" .}}
 
         {{end}}
 
