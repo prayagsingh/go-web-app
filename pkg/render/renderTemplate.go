@@ -7,19 +7,29 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/prayagsingh/go-web-app/pkg/config"
 )
 
 var functions = template.FuncMap{}
 
+var app *config.AppConfig
+
+// NewTemplate sets the config for the new template package
+func NewTemplate(a *config.AppConfig) {
+	app = a
+}
+
 // RenderTemplate for rendering the template using html/template
 func RenderTemplate(rw http.ResponseWriter, tmpl string) {
 
-	templateCache, err := CreateTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-		return
+	var templateCache map[string]*template.Template
+	// In Production load template from template Cache
+	if app.UseCache {
+		templateCache = app.TemplateCache
+	} else {
+		templateCache, _ = CreateTemplateCache()
 	}
-
 	// ok is used to check if the template exists or not
 	// if template found, ok wil return true else false
 	t, ok := templateCache[tmpl]
@@ -31,7 +41,7 @@ func RenderTemplate(rw http.ResponseWriter, tmpl string) {
 	}
 
 	buf := new(bytes.Buffer)
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 	if err != nil {
 		fmt.Println("Error writing parsed template to buffer", err)
 		return
